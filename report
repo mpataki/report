@@ -3,6 +3,23 @@
 require './lib/gist.rb'
 require 'byebug' # DELETE ME
 
+def show_usage_message(exit_status = 0)
+	puts "Use `report` as follows:\n\n"
+	puts "\t`report TASK-DESCRIPTION`"
+	puts "\t\t- finds or create a new gist for today"
+	puts "\t\t- adds a new item with the provided TASK-DESCRIPTION\n\n"
+	puts "\t`report list`"
+	puts "\t\t- Lists all the tasks from today, including their TASK-ID\n\n"
+	puts "\t`report stop`"
+	puts "\t\t- stops time tracking the current task, if it exists\n\n"
+	puts "\t`report continue [TASK-ID]`"
+	puts "\t\t- continues time tracking the latest task, if it exists\n\n"
+	puts "\t`report help`"
+	puts "\t\t- shows this message"
+
+	exit exit_status
+end
+
 def report_gist_description(user, time = Time.now)
   "#{user}_report_#{time.strftime('%Y-%m-%d')}"
 end
@@ -31,7 +48,33 @@ def create_report_gist(user, api_token, time = Time.now)
   Gist.create(user, api_token, params)
 end
 
-user = 'mpataki' # probably want to pull this from a config
+case ARGV.first
+when 'list'
+	# TODO: list today's items
+	puts "Not Implemented\n\n"
+	puts "\t- Lists all the tasks from today, including their TASK-ID"
+	exit
+when 'stop'
+	# TODO: stop the current task, or explain that none exists
+	puts "Not Implemented\n\n"
+	puts "\t- stops time tracking the current task, if it exists"
+	exit
+when 'continue'
+	# TODO: continue the latest task, or provided task, or explain that none exists
+	puts "Not Implemented\n\n"
+	puts "\t- continues time tracking the latest task, if it exists"
+	exit
+when 'help', nil
+	show_usage_message
+else
+	# TODO: treat this as a description, make the item
+	puts "Not Implemented\n\n"
+	puts "\t- finds or create a new gist for today"
+	puts "\t- adds a new item with the provided TASK-DESCRIPTION"
+	exit
+end
+
+user = 'mpataki' # TODO: pull this from a config
 api_token = File.read('gist_token').strip
 
 gists = Gist.get_recent_gists_for_user(user, api_token)
