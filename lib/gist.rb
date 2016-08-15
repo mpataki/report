@@ -22,7 +22,7 @@ module Gist
       http.use_ssl = true
       request = Net::HTTP::Get.new(uri.request_uri)
       response = http.request(request)
-      response_body = JSON.parse(response.body)
+      JSON.parse(response.body)
     end
 
     def create(user, api_token, params)
@@ -30,6 +30,19 @@ module Gist
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       request = Net::HTTP::Post.new(uri.request_uri)
+      request['Accept'] = 'application/json'
+      request['Content-Type'] = 'application/json'
+      request['Authorization'] = "token #{api_token}"
+      request.body = JSON.dump(params)
+      response = http.request(request)
+      JSON.parse(response.body)
+    end
+
+    def edit(gist_id, params)
+      uri = URI "https://api.github.com/gists/#{gist_id}"
+      request = Net::HTTP::Patch.new(uri.request_uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
       request['Accept'] = 'application/json'
       request['Content-Type'] = 'application/json'
       request['Authorization'] = "token #{api_token}"
