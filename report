@@ -1,6 +1,5 @@
-require 'uri'
-require 'net/http'
-require 'json'
+#! /usr/bin/env ruby
+
 require './lib/gist.rb'
 require 'byebug' # DELETE ME
 
