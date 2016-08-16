@@ -4,8 +4,11 @@ require 'json'
 
 module Gist
   class << self
+    def find_gist_from_today_by_description(description)
+      # TODO: use this instead of what's going on in the api
+    end
+
     def get_recent_gists_for_user
-      puts "Querying for today's report"
       now = Time.now
 
       # kind of like Time.now.midnight in UTC

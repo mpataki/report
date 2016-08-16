@@ -1,11 +1,11 @@
 #! /usr/bin/env ruby
 
 require 'byebug' # DELETE ME
-require './lib/exceptions.rb'
 require './lib/user.rb'
 require './lib/gist.rb'
 require './lib/task.rb'
 require './lib/report.rb'
+require './lib/report_api.rb'
 
 def show_usage_message(exit_status = 0)
 	puts "Use `report` as follows:\n\n"
@@ -47,7 +47,7 @@ begin
 	when 'help', nil
 		show_usage_message
 	else
-		Report.start(ARGV[0])
+		ReportAPI.start(ARGV[0])
 	end
 rescue Report::TaskAlreadyTracked
 	puts "Task '#{ARGV[0]}' is already being tracked. Continuing the task."

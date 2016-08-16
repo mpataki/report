@@ -1,91 +1,102 @@
-module Report
+class Report
+  TaskAlreadyTracked = Class.new StandardError
+
   class << self
-    def report_gist_description(time = Time.now)
-      "#{User.name}_report_#{time.strftime('%Y-%m-%d')}"
+    def gist_description
+      "#{User.name}_report_#{Time.now.strftime('%Y-%m-%d')}"
     end
 
-    def report_file_name(description)
-      "#{description}.json"
+    def json_file_name
+      "#{gist_description}.json"
     end
 
-    # return nil if none exist
-    def find_report_gist_from_today(gists)
-      description = report_gist_description
-      gists.find { |gist| gist['description'] == description }
-    end
-
-    def existing_task?(existing_tasks, new_task_description)
-      existing_tasks.any? do |task|
-        task[:description] == new_task_description
-      end
-    end
-
-    def json_content(task_description, existing_tasks = nil)
-      JSON.pretty_generate(
-        if existing_tasks.nil?
-          [Task.new(description: task_description).to_hash]
-        else
-          existing_tasks.map! do |hash|
-            task = Task.from_existing_tasks(hash)
-            task.stop
-            task.to_hash
-          end
-
-          raise TaskAlreadyTracked if existing_task?(existing_tasks, task_description)
-          existing_tasks + [Task.new(description: task_description).to_hash]
-        end
+    def create(new_task_description:)
+      Report.new(
+        description: gist_description,
+        json_file_name: json_file_name
       )
     end
 
-    def create_report_gist(content, time = Time.now)
-      puts 'Creating a new report' # TODO: add a verbose mode for this
-      description = report_gist_description(time)
-      file_name = report_file_name(description)
+    def create(report_gist:)
+      raw_url = report_gist['files'][json_file_name]['raw_url']
 
-      params = {
-        public: false,
-        description: description,
-        files: {
-          file_name => {
-            content: content
-          }
-        }
-      }
-
-      Gist.create(params)
-    end
-
-    def edit_report_gist(report_gist, content)
-      puts 'Editing the existing report' # TODO: add a verbose mode for this
-      json_file =
-        report_gist['files'].values.find { |f| f['language'] == 'JSON' }
-
-      params = {
-        description: report_gist['description'], # do we actually need this? Seems odd...
-        files: {
-          json_file['filename'] => {
-            content: content
-          }
-        }
-      }
-
-      Gist.edit(report_gist['id'], params)
-    end
-
-    def start(task)
-      gists = Gist.get_recent_gists_for_user
-      report_gist = find_report_gist_from_today(gists)
-
-      if report_gist.nil?
-        report_gist = create_report_gist(json_content(task))
-      else
-        description = report_gist_description
-        file_name = report_file_name(description)
-        raw_url = report_gist['files'][file_name]['raw_url']
-        existing_tasks = Gist.file_content(raw_url)
-        json_file_content = json_content(task, existing_tasks)
-        edit_report_gist(report_gist, json_file_content)
-      end
+      Report.new(
+        description: gist_description,
+        json_file_name: json_file_name,
+        gist_id: report_gist['id'],
+        existing_json_content: Gist.file_content(raw_url)
+      )
     end
   end
+
+  def stop_all_tasks
+    @tasks.each(&:stop)
+  end
+
+  def start_task(new_task_description)
+    if @tasks.any? { |t| t.description == new_task_description }
+      raise TaskAlreadyTracked
+    end
+
+    @tasks << Task.new(description: new_task_description)
+  end
+
+  def save_to_gist!
+    if @gist_id
+      edit_existing_gist!
+    else
+      save_new_gist!
+    end
+  end
+
+  private
+    # for new reports
+    def initialize(description:, json_file_name:)
+      @description = description
+      @json_file_name = json_file_name
+      @tasks = [Task.new(description: task_description).to_hash]
+    end
+
+    # for previously existing reports
+    def initialize(description:, json_file_name:, gist_id:, existing_json_content:)
+      @description = description
+      @json_file_name = json_file_name
+      @gist_id = gist_id
+
+      @tasks =
+        existing_json_content.map do |hash|
+          Task.from_existing_tasks(hash)
+        end
+    end
+
+    def task_json
+      JSON.pretty_generate(@tasks.map(&:to_hash))
+    end
+
+    def save_new_gist!
+      puts "starting a new report gist for the day"
+
+      Gist.create(
+        public: false,
+        description: @description,
+        files: {
+          @json_file_name => {
+            content: task_json
+          }
+        }
+      )
+    end
+
+    def edit_existing_gist!
+      puts "adding to today's gist"
+
+      Gist.edit(@gist_id,
+        description: @description, # do we actually need this? Seems odd...
+        files: {
+          @json_file_name => {
+            content: task_json
+          }
+        }
+      )
+    end
 end
