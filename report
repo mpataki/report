@@ -35,10 +35,7 @@ begin
 		puts "\t- Lists all the tasks from today, including their TASK-ID"
 		exit
 	when 'stop'
-		# TODO: stop the current task, or explain that none exists
-		puts "Not Implemented\n\n"
-		puts "\t- stops time tracking the current task, if it exists"
-		exit
+		ReportAPI.stop
 	when 'continue'
 		# TODO: continue the latest task, or provided task, or explain that none exists
 		puts "Not Implemented\n\n"

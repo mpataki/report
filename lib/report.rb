@@ -74,7 +74,7 @@ class Report
     end
 
     def save_new_gist!
-      puts "starting a new report gist for the day"
+      puts "Starting a new report gist for the day."
 
       Gist.create(
         public: false,
@@ -88,7 +88,7 @@ class Report
     end
 
     def edit_existing_gist!
-      puts "adding to today's gist"
+      puts "Editing to today's gist."
 
       Gist.edit(@gist_id,
         description: @description, # do we actually need this? Seems odd...
