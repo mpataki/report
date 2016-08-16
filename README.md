@@ -21,7 +21,7 @@ At the end of the day, this gist can be sent to your producer so they know where
 - [x] `delete`
 - [ ] confirmation messages for `delete`
 - [x] `list`
-- [ ] `current`
+- [x] `current`
 - [ ] `summary`
 - [x] rename to `task`
 - [ ] setup install
