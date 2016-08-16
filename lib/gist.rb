@@ -38,7 +38,7 @@ module Gist
       JSON.parse(response.body)
     end
 
-    def edit(gist_id, params)
+    def edit(gist_id, api_token, params)
       uri = URI "https://api.github.com/gists/#{gist_id}"
       request = Net::HTTP::Patch.new(uri.request_uri)
       http = Net::HTTP.new(uri.host, uri.port)
@@ -47,6 +47,17 @@ module Gist
       request['Content-Type'] = 'application/json'
       request['Authorization'] = "token #{api_token}"
       request.body = JSON.dump(params)
+      response = http.request(request)
+      JSON.parse(response.body)
+    end
+
+    def file_content(raw_url, api_token)
+      uri = URI raw_url
+      request = Net::HTTP::Get.new(uri.request_uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      request['Accept'] = 'application/json'
+      request['Authorization'] = "token #{api_token}"
       response = http.request(request)
       JSON.parse(response.body)
     end
