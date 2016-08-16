@@ -14,12 +14,16 @@ module Report
       gists.find { |gist| gist['description'] == description }
     end
 
+    def existing_task?(existing_tasks, new_task_description)
+      existing_tasks.any? do |task|
+        task[:description] == new_task_description
+      end
+    end
+
     def json_content(task_description, existing_tasks = nil)
       JSON.pretty_generate(
         if existing_tasks.nil?
-          [
-            Task.new(description: task_description).to_hash
-          ]
+          [Task.new(description: task_description).to_hash]
         else
           existing_tasks.map! do |hash|
             task = Task.from_existing_tasks(hash)
@@ -27,7 +31,7 @@ module Report
             task.to_hash
           end
 
-          # TODO: should check here if the task is already present
+          raise TaskAlreadyTracked if existing_task?(existing_tasks, task_description)
           existing_tasks + [Task.new(description: task_description).to_hash]
         end
       )
@@ -79,7 +83,8 @@ module Report
         file_name = report_file_name(description)
         raw_url = report_gist['files'][file_name]['raw_url']
         existing_tasks = Gist.file_content(raw_url)
-        edit_report_gist(report_gist, json_content(task, existing_tasks))
+        json_file_content = json_content(task, existing_tasks)
+        edit_report_gist(report_gist, json_file_content)
       end
     end
   end

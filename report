@@ -1,6 +1,7 @@
 #! /usr/bin/env ruby
 
 require 'byebug' # DELETE ME
+require './lib/exceptions.rb'
 require './lib/user.rb'
 require './lib/gist.rb'
 require './lib/task.rb'
@@ -26,24 +27,31 @@ end
 User.name = 'mpataki' # TODO: pull this from a config
 User.api_token = File.read('gist_token').strip
 
-case ARGV.first
-when 'list'
-	# TODO: list today's items
-	puts "Not Implemented\n\n"
-	puts "\t- Lists all the tasks from today, including their TASK-ID"
-	exit
-when 'stop'
-	# TODO: stop the current task, or explain that none exists
-	puts "Not Implemented\n\n"
-	puts "\t- stops time tracking the current task, if it exists"
-	exit
-when 'continue'
-	# TODO: continue the latest task, or provided task, or explain that none exists
-	puts "Not Implemented\n\n"
-	puts "\t- continues time tracking the latest task, if it exists"
-	exit
-when 'help', nil
-	show_usage_message
-else
-	Report.start(ARGV.first)
+begin
+	case ARGV[0]
+	when 'list'
+		# TODO: list today's items
+		puts "Not Implemented\n\n"
+		puts "\t- Lists all the tasks from today, including their TASK-ID"
+		exit
+	when 'stop'
+		# TODO: stop the current task, or explain that none exists
+		puts "Not Implemented\n\n"
+		puts "\t- stops time tracking the current task, if it exists"
+		exit
+	when 'continue'
+		# TODO: continue the latest task, or provided task, or explain that none exists
+		puts "Not Implemented\n\n"
+		puts "\t- continues time tracking the latest task, or provided task, if it exists"
+		exit
+	when 'help', nil
+		show_usage_message
+	else
+		Report.start(ARGV[0])
+	end
+rescue Report::TaskAlreadyTracked
+	puts "Task '#{ARGV[0]}' is already being tracked. Continuing the task."
+	ARGV[1] = ARGV[0]
+	ARGV[0] = 'continue'
+	retry
 end
