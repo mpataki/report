@@ -1,5 +1,6 @@
 class Report
   TaskAlreadyTracked = Class.new StandardError
+  TaskAlreadyOngoing = Class.new StandardError
 
   class << self
     def gist_description
@@ -17,20 +18,16 @@ class Report
       )
     end
 
-    def create(report_gist:)
-      raw_url = report_gist['files'][json_file_name]['raw_url']
+    def create_from_gist(gist)
+      raw_url = gist['files'][json_file_name]['raw_url']
 
       Report.new(
         description: gist_description,
         json_file_name: json_file_name,
-        gist_id: report_gist['id'],
+        gist_id: gist['id'],
         existing_json_content: Gist.file_content(raw_url)
       )
     end
-  end
-
-  def stop_all_tasks
-    @tasks.each(&:stop)
   end
 
   def start_task(new_task_description)
@@ -39,6 +36,23 @@ class Report
     end
 
     @tasks << Task.new(description: new_task_description)
+  end
+
+  def stop_all_tasks
+    @tasks.each(&:stop)
+  end
+
+  def continue(task_id)
+    ensure_no_tasks_ongoing!
+
+    task =
+      if task_id.nil?
+        find_last_task_to_be_worked_on
+      else
+        find_task_by_id(task_id)
+      end
+
+    task.continue
   end
 
   def save_to_gist!
@@ -50,15 +64,7 @@ class Report
   end
 
   private
-    # for new reports
-    def initialize(description:, json_file_name:)
-      @description = description
-      @json_file_name = json_file_name
-      @tasks = [Task.new(description: task_description).to_hash]
-    end
-
-    # for previously existing reports
-    def initialize(description:, json_file_name:, gist_id:, existing_json_content:)
+    def initialize(description:, json_file_name:, gist_id: nil, existing_json_content: [])
       @description = description
       @json_file_name = json_file_name
       @gist_id = gist_id
@@ -98,5 +104,19 @@ class Report
           }
         }
       )
+    end
+
+    def find_task_by_id(task_id)
+    end
+
+    def find_last_task_to_be_worked_on
+      @tasks.inject(@tasks.first) do |result, task|
+        task.last_start_time > result.last_start_time ? task : result
+      end
+    end
+
+    def ensure_no_tasks_ongoing!
+      ongoing_task = @tasks.find(&:ongoing?)
+      raise TaskAlreadyOngoing, ongoing_task if ongoing_task
     end
 end

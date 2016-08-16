@@ -9,7 +9,7 @@ require './lib/report_api.rb'
 
 def show_usage_message(exit_status = 0)
 	puts "Use `report` as follows:\n\n"
-	puts "\t`report TASK-DESCRIPTION`"
+	puts "\t`report start TASK-DESCRIPTION`"
 	puts "\t\t- finds or create a new gist for today"
 	puts "\t\t- adds a new item with the provided TASK-DESCRIPTION\n\n"
 	puts "\t`report list`"
@@ -24,7 +24,7 @@ def show_usage_message(exit_status = 0)
 	exit exit_status
 end
 
-User.name = 'mpataki' # TODO: pull this from a config
+User.name = 'mpataki' # TODO: pull this from a config (maybe even .git_config ?)
 User.api_token = File.read('gist_token').strip
 
 begin
@@ -34,17 +34,16 @@ begin
 		puts "Not Implemented\n\n"
 		puts "\t- Lists all the tasks from today, including their TASK-ID"
 		exit
+	when 'start'
+		ReportAPI.start(ARGV[0])
 	when 'stop'
 		ReportAPI.stop
 	when 'continue'
-		# TODO: continue the latest task, or provided task, or explain that none exists
-		puts "Not Implemented\n\n"
-		puts "\t- continues time tracking the latest task, or provided task, if it exists"
-		exit
-	when 'help', nil
-		show_usage_message
+		ReportAPI.continue(ARGV[1])
+	# when 'delete'
+	# when 'info'
 	else
-		ReportAPI.start(ARGV[0])
+		show_usage_message
 	end
 rescue Report::TaskAlreadyTracked
 	puts "Task '#{ARGV[0]}' is already being tracked. Continuing the task."
