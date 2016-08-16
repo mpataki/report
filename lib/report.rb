@@ -1,7 +1,7 @@
 module Report
   class << self
-    def report_gist_description(user, time = Time.now)
-      "#{user}_report_#{time.strftime('%Y-%m-%d')}"
+    def report_gist_description(time = Time.now)
+      "#{User.name}_report_#{time.strftime('%Y-%m-%d')}"
     end
 
     def report_file_name(description)
@@ -9,8 +9,8 @@ module Report
     end
 
     # return nil if none exist
-    def find_report_gist_from_today(user, gists)
-      description = report_gist_description(user)
+    def find_report_gist_from_today(gists)
+      description = report_gist_description
       gists.find { |gist| gist['description'] == description }
     end
 
@@ -33,9 +33,9 @@ module Report
       )
     end
 
-    def create_report_gist(user, api_token, content, time = Time.now)
-      puts 'Creating a new report'
-      description = report_gist_description(user, time)
+    def create_report_gist(content, time = Time.now)
+      puts 'Creating a new report' # TODO: add a verbose mode for this
+      description = report_gist_description(time)
       file_name = report_file_name(description)
 
       params = {
@@ -48,11 +48,11 @@ module Report
         }
       }
 
-      Gist.create(user, api_token, params)
+      Gist.create(params)
     end
 
-    def edit_report_gist(user, api_token, report_gist, content)
-      puts 'Editing the existing report'
+    def edit_report_gist(report_gist, content)
+      puts 'Editing the existing report' # TODO: add a verbose mode for this
       json_file =
         report_gist['files'].values.find { |f| f['language'] == 'JSON' }
 
@@ -65,24 +65,21 @@ module Report
         }
       }
 
-      Gist.edit(report_gist['id'], api_token, params)
+      Gist.edit(report_gist['id'], params)
     end
 
     def start(task)
-      user = 'mpataki' # TODO: pull this from a config
-      api_token = File.read('gist_token').strip
-
-      gists = Gist.get_recent_gists_for_user(user, api_token)
-      report_gist = find_report_gist_from_today(user, gists)
+      gists = Gist.get_recent_gists_for_user
+      report_gist = find_report_gist_from_today(gists)
 
       if report_gist.nil?
-        report_gist = create_report_gist(user, api_token, json_content(task))
+        report_gist = create_report_gist(json_content(task))
       else
-        description = report_gist_description(user)
+        description = report_gist_description
         file_name = report_file_name(description)
         raw_url = report_gist['files'][file_name]['raw_url']
-        existing_content = Gist.file_content(raw_url, api_token)
-        edit_report_gist(user, api_token, report_gist, json_content(task, existing_content))
+        existing_content = Gist.file_content(raw_url)
+        edit_report_gist(report_gist, json_content(task, existing_content))
       end
     end
   end

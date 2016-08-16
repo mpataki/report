@@ -1,6 +1,7 @@
 #! /usr/bin/env ruby
 
 require 'byebug' # DELETE ME
+require './lib/user.rb'
 require './lib/gist.rb'
 require './lib/task.rb'
 require './lib/report.rb'
@@ -21,6 +22,9 @@ def show_usage_message(exit_status = 0)
 
 	exit exit_status
 end
+
+User.name = 'mpataki' # TODO: pull this from a config
+User.api_token = File.read('gist_token').strip
 
 case ARGV.first
 when 'list'
