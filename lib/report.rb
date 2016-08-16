@@ -15,7 +15,7 @@ module Report
     end
 
     def json_content(task_description, existing_content = nil)
-      JSON.dump(
+      JSON.pretty_generate(
         if existing_content.nil?
           [
             Task.new(description: task_description).to_hash
