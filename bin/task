@@ -1,11 +1,7 @@
 #! /usr/bin/env ruby
 
 require 'byebug' # DELETE ME
-require './lib/user.rb'
-require './lib/gist.rb'
-require './lib/task.rb'
-require './lib/report.rb'
-require './lib/task_api.rb'
+require 'task_report'
 
 def show_usage_message(exit_status = 0)
 	puts "Use `task` as follows:\n\n"

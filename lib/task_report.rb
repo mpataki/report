@@ -1,4 +1,10 @@
-module TaskAPI
+require "task_report/version"
+require 'task_report/user'
+require 'task_report/gist'
+require 'task_report/task'
+require 'task_report/report'
+
+module TaskReport
   class << self
     def start(new_task_description)
       report =
