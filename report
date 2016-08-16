@@ -16,8 +16,8 @@ def show_usage_message(exit_status = 0)
 	puts "\t\t- Lists all the tasks from today, including their TASK-ID\n\n"
 	puts "\t`report stop`"
 	puts "\t\t- stops time tracking the current task, if it exists\n\n"
-	puts "\t`report continue [TASK-ID]`"
-	puts "\t\t- continues time tracking the latest task, if it exists\n\n"
+	puts "\t`report continue [TASK-ID, TASK-DESCRIPTION]`"
+	puts "\t\t- continues time tracking the on the provided task, or latest task if none if provided, if it exists\n\n"
 	puts "\t`report help`"
 	puts "\t\t- shows this message"
 
