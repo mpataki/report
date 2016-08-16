@@ -42,6 +42,7 @@ begin
 		ReportAPI.continue(ARGV[1])
 	# when 'delete'
 	# when 'info'
+	# when 'summary'
 	else
 		show_usage_message
 	end
