@@ -57,6 +57,15 @@ module TaskAPI
       puts "Task '#{task_id}' does not exist - nothing to do."
     end
 
+    def current
+      return if no_gist?
+
+      report = Report.create_from_gist(report_gist)
+      report.print_current_task
+    rescue Report::MultipleOngoingTasks
+      puts 'Something went wrong. There are multiple ongoing tasks.'
+    end
+
     private
       def report_gist
         @report_gist ||=

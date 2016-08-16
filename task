@@ -22,6 +22,8 @@ def show_usage_message(exit_status = 0)
 	puts "\t\t- deletes the provided task if it exists\n"
 	puts "\t\t- if 'today' is passed, then all tasks in today's report will be deleted\n"
 	puts "\t\t- if 'gist' is passed, then the whole report gist for today will be deleted\n\n"
+	puts "\t`task current`"
+	puts "\t\t- lists the currently ongoing task\n\n"
 	puts "\t`task help`"
 	puts "\t\t- shows this message"
 
@@ -43,6 +45,8 @@ begin
 		TaskAPI.continue(ARGV[1])
 	when 'delete'
 		TaskAPI.delete(ARGV[1])
+	when 'current'
+		TaskAPI.current
 	# when 'info'
 	# when 'summary'
 	else

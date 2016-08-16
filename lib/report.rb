@@ -2,6 +2,7 @@ class Report
   TaskAlreadyTracked = Class.new StandardError
   TaskAlreadyOngoing = Class.new StandardError
   TaskDNE = Class.new StandardError
+  MultipleOngoingTasks = Class.new StandardError
 
   attr_reader :gist_id
 
@@ -86,6 +87,18 @@ class Report
     end
   end
 
+  def print_current_task
+    ensure_only_one_ongoing_task!
+
+    task = @tasks.find(&:ongoing?)
+
+    if task.nil?
+      puts "There is no task ongoing."
+    else
+      puts "The curent task is: #{task.to_s}."
+    end
+  end
+
   def save_to_gist!
     if @gist_id
       edit_existing_gist!
@@ -154,5 +167,9 @@ class Report
     def ensure_no_tasks_ongoing!
       ongoing_task = @tasks.find(&:ongoing?)
       raise TaskAlreadyOngoing, ongoing_task if ongoing_task
+    end
+
+    def ensure_only_one_ongoing_task!
+      raise MultipleOngoingTasks if @tasks.count(&:ongoing?) > 1
     end
 end
