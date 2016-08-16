@@ -21,7 +21,7 @@ At the end of the day, this gist can be sent to your producer so they know where
 - [ ] `delete`
 - [ ] `list`
 - [ ] `summary`
-- [ ] rename to `task`?
+- [x] rename to `task`
 - [ ] setup install
 
 --------------------
