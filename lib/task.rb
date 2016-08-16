@@ -1,7 +1,7 @@
 require 'time' # Time.parse)
 
 class Task
-  def self.from_existing_content(hash)
+  def self.from_existing_tasks(hash)
     time =
       hash['time'].map do |t|
         {

@@ -14,21 +14,21 @@ module Report
       gists.find { |gist| gist['description'] == description }
     end
 
-    def json_content(task_description, existing_content = nil)
+    def json_content(task_description, existing_tasks = nil)
       JSON.pretty_generate(
-        if existing_content.nil?
+        if existing_tasks.nil?
           [
             Task.new(description: task_description).to_hash
           ]
         else
-          existing_content.map! do |hash|
-            task = Task.from_existing_content(hash)
+          existing_tasks.map! do |hash|
+            task = Task.from_existing_tasks(hash)
             task.stop
             task.to_hash
           end
 
           # TODO: should check here if the task is already present
-          existing_content + [Task.new(description: task_description).to_hash]
+          existing_tasks + [Task.new(description: task_description).to_hash]
         end
       )
     end
@@ -78,8 +78,8 @@ module Report
         description = report_gist_description
         file_name = report_file_name(description)
         raw_url = report_gist['files'][file_name]['raw_url']
-        existing_content = Gist.file_content(raw_url)
-        edit_report_gist(report_gist, json_content(task, existing_content))
+        existing_tasks = Gist.file_content(raw_url)
+        edit_report_gist(report_gist, json_content(task, existing_tasks))
       end
     end
   end
