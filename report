@@ -35,7 +35,7 @@ begin
 		puts "\t- Lists all the tasks from today, including their TASK-ID"
 		exit
 	when 'start'
-		ReportAPI.start(ARGV[0])
+		ReportAPI.start(ARGV[1])
 	when 'stop'
 		ReportAPI.stop
 	when 'continue'
@@ -48,7 +48,6 @@ begin
 	end
 rescue Report::TaskAlreadyTracked
 	puts "Task '#{ARGV[0]}' is already being tracked. Continuing the task."
-	ARGV[1] = ARGV[0]
 	ARGV[0] = 'continue'
 	retry
 end

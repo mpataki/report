@@ -1,9 +1,10 @@
 require 'time' # Time.parse)
+require 'securerandom'
 
 class Task
   TaskOngoing = Class.new StandardError
 
-  attr_reader :description
+  attr_reader :id, :description
 
   def self.from_existing_tasks(hash)
     time =
@@ -15,19 +16,21 @@ class Task
       end
 
     self.new(
+      id: hash['id'],
       description: hash['description'],
       time: time
     )
   end
 
-  def initialize(description:, time: nil)
+  def initialize(description:, time: nil, id: nil)
     @description = description
     @time = time || [{ start: Time.now, end: nil }]
-    @id = :placeholder
+    @id = id || SecureRandom.hex(4)
   end
 
   def to_hash
     {
+      id: @id,
       description: @description,
       time: @time
     }

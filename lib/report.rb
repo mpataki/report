@@ -49,7 +49,7 @@ class Report
       if task_id.nil?
         find_last_task_to_be_worked_on
       else
-        find_task_by_id(task_id)
+        find_task_by_id(task_id) || find_task_by_description(task_id)
       end
 
     task.continue
@@ -107,6 +107,11 @@ class Report
     end
 
     def find_task_by_id(task_id)
+      @tasks.find { |t| t.id == task_id }
+    end
+
+    def find_task_by_description(task_description)
+      @tasks.find { |t| t.description == task_description }
     end
 
     def find_last_task_to_be_worked_on
