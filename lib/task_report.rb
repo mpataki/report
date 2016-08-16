@@ -1,4 +1,3 @@
-require "task_report/version"
 require 'task_report/user'
 require 'task_report/gist'
 require 'task_report/task'

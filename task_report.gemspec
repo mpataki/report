@@ -5,7 +5,7 @@ require 'task_report/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'task_report'
-  spec.version       = TaskReport::VERSION
+  spec.version       = File.read('VERSION')
   spec.authors       = ['Mat Pataki']
   spec.email         = ['matpataki@gmail.com']
 
