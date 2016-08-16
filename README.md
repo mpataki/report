@@ -4,7 +4,7 @@ This is half a tool to help me track where my days go, and half an excuse to use
 
 The API with (eventually) be:
 ```shell
-⫸ task start "Some tasks that I'm switching to"
+⫸ task start "Some task that I'm switching to"
 ```
 The first call to `task` for the day will create a new gist with today's date. A line item containing a timestamp and the provided message will be included in the gist. As more calls to `task` occur throughout the day, more line items will be appended to the gist.
 
