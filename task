@@ -5,20 +5,20 @@ require './lib/user.rb'
 require './lib/gist.rb'
 require './lib/task.rb'
 require './lib/report.rb'
-require './lib/report_api.rb'
+require './lib/task_api.rb'
 
 def show_usage_message(exit_status = 0)
-	puts "Use `report` as follows:\n\n"
-	puts "\t`report start TASK-DESCRIPTION`"
+	puts "Use `task` as follows:\n\n"
+	puts "\t`task start TASK-DESCRIPTION`"
 	puts "\t\t- finds or create a new gist for today"
 	puts "\t\t- adds a new item with the provided TASK-DESCRIPTION\n\n"
-	puts "\t`report list`"
+	puts "\t`task list`"
 	puts "\t\t- Lists all the tasks from today, including their TASK-ID\n\n"
-	puts "\t`report stop`"
+	puts "\t`task stop`"
 	puts "\t\t- stops time tracking the current task, if it exists\n\n"
-	puts "\t`report continue [TASK-ID, TASK-DESCRIPTION]`"
+	puts "\t`task continue [TASK-ID, TASK-DESCRIPTION]`"
 	puts "\t\t- continues time tracking the on the provided task, or latest task if none if provided, if it exists\n\n"
-	puts "\t`report help`"
+	puts "\t`task help`"
 	puts "\t\t- shows this message"
 
 	exit exit_status
@@ -35,11 +35,11 @@ begin
 		puts "\t- Lists all the tasks from today, including their TASK-ID"
 		exit
 	when 'start'
-		ReportAPI.start(ARGV[1])
+		TaskAPI.start(ARGV[1])
 	when 'stop'
-		ReportAPI.stop
+		TaskAPI.stop
 	when 'continue'
-		ReportAPI.continue(ARGV[1])
+		TaskAPI.continue(ARGV[1])
 	# when 'delete'
 	# when 'info'
 	# when 'summary'

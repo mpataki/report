@@ -1,4 +1,4 @@
-module ReportAPI
+module TaskAPI
   class << self
     def start(new_task_description)
       report =
