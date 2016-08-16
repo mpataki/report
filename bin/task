@@ -1,6 +1,5 @@
 #! /usr/bin/env ruby
 
-require 'byebug' # DELETE ME
 require 'task_report'
 
 def show_usage_message(exit_status = 0)
