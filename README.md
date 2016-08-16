@@ -1,14 +1,38 @@
-## Task!
+# Task!
 
-This is half a tool to help me track where my days go, and half an excuse to use the github API for something.
+## Installation
 
-The API with (eventually) be:
+TODO
+
+## Usage
+
 ```shell
-⫸ task start "Some task that I'm switching to"
-```
-The first call to `task` for the day will create a new gist with today's date. A line item containing a timestamp and the provided message will be included in the gist. As more calls to `task` occur throughout the day, more line items will be appended to the gist.
+Use `task` as follows:
 
-At the end of the day, this gist can be sent to your producer so they know where your time went.
+  `task start TASK-DESCRIPTION`
+    - finds or create a new gist for today
+    - adds a new item with the provided TASK-DESCRIPTION
+
+  `task list`
+    - Lists all of today's tasks
+
+  `task stop`
+    - stops time tracking the current task, if it exists
+
+  `task continue [TASK-ID, TASK-DESCRIPTION]`
+    - continues tracking the provided task, or latest task if none if provided
+
+  `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`
+    - deletes the provided task if it exists
+    - if 'today' is passed, then all tasks in today's report will be deleted
+    - if 'gist' is passed, then the whole report gist for today will be deleted
+
+  `task current`
+    - lists the currently ongoing task
+
+  `task help`
+    - shows this message
+```
 
 ## System Requirements
 
@@ -26,13 +50,6 @@ At the end of the day, this gist can be sent to your producer so they know where
 - [x] rename to `task`
 - [ ] setup install
 
---------------------
+## License
 
-### The MIT License (MIT)
-#### Copyright (c) 2016 Mat Pataki
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
