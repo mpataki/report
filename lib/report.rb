@@ -1,6 +1,9 @@
 class Report
   TaskAlreadyTracked = Class.new StandardError
   TaskAlreadyOngoing = Class.new StandardError
+  TaskDNE = Class.new StandardError
+
+  attr_reader :gist_id
 
   class << self
     def gist_description
@@ -35,7 +38,9 @@ class Report
       raise TaskAlreadyTracked
     end
 
-    @tasks << Task.new(description: new_task_description)
+    task = Task.new(description: new_task_description)
+    puts "Starting #{task.to_s}."
+    @tasks << task
   end
 
   def stop_all_tasks
@@ -55,18 +60,37 @@ class Report
     task.continue
   end
 
+  def delete(task_id)
+    task = find_task_by_id(task_id) || find_task_by_description(task_id)
+    raise TaskDNE if task.nil?
+
+    puts "Deleting #{task.to_s}."
+    @tasks.delete_if { |t| t.id == task.id }
+  end
+
+  def delete_all
+    puts "Deleting all tasks for today."
+    @tasks = []
+  end
+
+  def print_tasks
+    if @tasks.empty?
+      puts 'There are no tasks reported for today.'
+      return
+    end
+
+    puts "Tasks:"
+
+    @tasks.each do |task|
+      puts "- #{task.to_s}"
+    end
+  end
+
   def save_to_gist!
     if @gist_id
       edit_existing_gist!
     else
       save_new_gist!
-    end
-  end
-
-  def print_tasks
-    puts "Tasks:"
-    @tasks.each do |task|
-      puts "- #{task.to_s}"
     end
   end
 
@@ -101,7 +125,7 @@ class Report
     end
 
     def edit_existing_gist!
-      puts "Editing to today's gist."
+      puts "Saving to today's report gist."
 
       Gist.edit(@gist_id,
         description: @description, # do we actually need this? Seems odd...

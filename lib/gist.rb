@@ -56,6 +56,15 @@ module Gist
       JSON.parse(response.body)
     end
 
+    def delete(gist_id)
+      uri = URI "https://api.github.com/gists/#{gist_id}"
+      request = Net::HTTP::Delete.new(uri.request_uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      request['Authorization'] = "token #{User.api_token}"
+      http.request(request)
+    end
+
     def file_content(raw_url)
       uri = URI raw_url
       request = Net::HTTP::Get.new(uri.request_uri)

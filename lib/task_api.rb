@@ -33,8 +33,28 @@ module TaskAPI
 
     def list
       return if no_gist?
-
       Report.create_from_gist(report_gist).print_tasks
+    end
+
+    def delete(identifier)
+      return if no_gist?
+
+      report = Report.create_from_gist(report_gist)
+
+      case identifier
+      when 'all'
+        report.delete_all
+      when 'gist'
+        puts "Deleting today's report gist"
+        Gist.delete(report.gist_id)
+        return
+      else
+        report.delete(identifier)
+      end
+
+      report.save_to_gist!
+    rescue Report::TaskDNE
+      puts "Task '#{task_id}' does not exist - nothing to do."
     end
 
     private
