@@ -13,11 +13,7 @@ module TaskAPI
     end
 
     def stop
-      if report_gist.nil?
-        puts 'No report exists for today - nothing to do.'
-        puts 'See `report help` for useage info.'
-        return
-      end
+      return if no_gist?
 
       report = Report.create_from_gist(report_gist)
       report.stop_all_tasks
@@ -26,11 +22,7 @@ module TaskAPI
     end
 
     def continue(task_id)
-      if report_gist.nil?
-        puts 'No report exists for today - nothing to do.'
-        puts 'See `report help` for useage info.'
-        return
-      end
+      return if no_gist?
 
       report = Report.create_from_gist(report_gist)
       report.continue(task_id)
@@ -39,10 +31,26 @@ module TaskAPI
       puts "Task already underway - #{e.message}"
     end
 
+    def list
+      return if no_gist?
+
+      Report.create_from_gist(report_gist).print_tasks
+    end
+
     private
       def report_gist
         @report_gist ||=
           Gist.find_gist_from_today_by_description(Report.gist_description)
+      end
+
+      def no_gist?
+        if report_gist.nil?
+          puts 'No report exists for today - nothing to do.'
+          puts 'See `report help` for usage info.'
+          return true
+        end
+
+        false
       end
   end
 end

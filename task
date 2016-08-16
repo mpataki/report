@@ -33,10 +33,7 @@ User.api_token = File.read('gist_token').strip
 begin
 	case ARGV[0]
 	when 'list'
-		# TODO: list today's items
-		puts "Not Implemented\n\n"
-		puts "\t- Lists all the tasks from today, including their TASK-ID"
-		exit
+		TaskAPI.list
 	when 'start'
 		TaskAPI.start(ARGV[1])
 	when 'stop'

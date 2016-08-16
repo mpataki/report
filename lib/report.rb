@@ -63,6 +63,13 @@ class Report
     end
   end
 
+  def print_tasks
+    puts "Tasks:"
+    @tasks.each do |task|
+      puts "- #{task.to_s}"
+    end
+  end
+
   private
     def initialize(description:, json_file_name:, gist_id: nil, existing_json_content: [])
       @description = description
