@@ -5,7 +5,9 @@ require 'json'
 module Gist
   class << self
     def find_gist_from_today_by_description(description)
-      # TODO: use this instead of what's going on in the api
+      Gist.get_recent_gists_for_user.find do |gist|
+        gist['description'] == description
+      end
     end
 
     def get_recent_gists_for_user
