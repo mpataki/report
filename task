@@ -18,6 +18,9 @@ def show_usage_message(exit_status = 0)
 	puts "\t\t- stops time tracking the current task, if it exists\n\n"
 	puts "\t`task continue [TASK-ID, TASK-DESCRIPTION]`"
 	puts "\t\t- continues time tracking the on the provided task, or latest task if none if provided, if it exists\n\n"
+	puts "\t`task delete {TASK-ID, TASK-DESCRIPTION, today}`"
+	puts "\t\t- deletes the provided task if it exists\n\n"
+	puts "\t\t- if 'today' is passed, then the whole of today's report will be deleted\n\n"
 	puts "\t`task help`"
 	puts "\t\t- shows this message"
 
