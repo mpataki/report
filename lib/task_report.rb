@@ -2,6 +2,7 @@ require 'task_report/user'
 require 'task_report/gist'
 require 'task_report/task'
 require 'task_report/report'
+require 'task_report/duration'
 
 module TaskReport
   class << self
