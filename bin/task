@@ -3,26 +3,35 @@
 require 'task_report'
 
 def show_usage_message(exit_status = 0)
-  puts "Use `task` as follows:\n\n"
-  puts "  `task start TASK-DESCRIPTION`"
-  puts "    - finds or create a new gist for today"
-  puts "    - adds a new item with the provided TASK-DESCRIPTION\n\n"
-  puts "  `task list`"
-  puts "    - Lists all of today's tasks\n\n"
-  puts "  `task stop`"
-  puts "    - stops time tracking the current task, if it exists\n\n"
-  puts "  `task continue [TASK-ID, TASK-DESCRIPTION]`"
-  puts "    - continues tracking the provided task, or latest task if none if provided\n\n"
-  puts "  `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`"
-  puts "    - deletes the provided task if it exists\n"
-  puts "    - if 'today' is passed, then all tasks in today's report will be deleted\n"
-  puts "    - if 'gist' is passed, then the whole report gist for today will be deleted\n\n"
-  puts "  `task current`"
-  puts "    - lists the currently ongoing task\n\n"
-  puts "  `task summary`"
-  puts "    - prints a task summary to the command line\n\n"
-  puts "  `task help`"
-  puts "    - shows this message"
+  puts \
+"Use `task` as follows:
+
+  `task start TASK-DESCRIPTION`
+    - finds or create a new gist for today
+    - adds a new item with the provided TASK-DESCRIPTION
+
+  `task list`
+    - Lists all of today's tasks
+
+  `task stop`
+    - stops time tracking the current task, if it exists
+
+  `task continue [TASK-ID, TASK-DESCRIPTION]`
+    - continues tracking the provided task, or latest task if none if provided
+
+  `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`
+    - deletes the provided task if it exists
+    - if 'today' is passed, then all tasks in today's report will be deleted
+    - if 'gist' is passed, then the whole report gist for today will be deleted
+
+  `task current`
+    - lists the currently ongoing task
+
+  `task summary`
+    - prints a task summary to the command line
+
+  `task help`
+    - shows this message"
 
   exit exit_status
 end
