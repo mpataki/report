@@ -12,7 +12,6 @@ This tool enables you to track where your time goes via a private [gist](https:/
 ```shell
 gem install task_report
 ```
-
 4. Add your github user name and personal access token to the config file. (more details to come.)
 
 ## Usage
