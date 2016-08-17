@@ -1,5 +1,7 @@
-module User
-  class << self
-    attr_accessor :name, :api_token
+module TaskReport
+  module User
+    class << self
+      attr_accessor :name, :api_token
+    end
   end
 end

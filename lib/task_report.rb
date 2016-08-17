@@ -74,7 +74,9 @@ module TaskReport
     private
       def report_gist
         @report_gist ||=
-          Gist.find_gist_from_today_by_description(Report.gist_description)
+          Gist.find_gist_from_today_by_description(
+            Report.gist_description
+          )
       end
 
       def no_gist?

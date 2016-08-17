@@ -25,8 +25,8 @@ def show_usage_message(exit_status = 0)
 	exit exit_status
 end
 
-User.name = 'mpataki' # TODO: pull this from a config (maybe even .git_config ?)
-User.api_token = File.read('gist_token').strip
+TaskReport::User.name = 'mpataki' # TODO: pull this from a config (maybe even .git_config ?)
+TaskReport::User.api_token = File.read('gist_token').strip
 
 begin
 	case ARGV[0]
@@ -47,7 +47,7 @@ begin
 	else
 		show_usage_message
 	end
-rescue Report::TaskAlreadyTracked
+rescue TaskReport::Report::TaskAlreadyTracked
 	puts "Task '#{ARGV[0]}' is already being tracked. Continuing the task."
 	ARGV[0] = 'continue'
 	retry
