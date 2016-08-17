@@ -44,7 +44,7 @@ when 'delete'
 when 'current'
 	TaskReport.current
 when 'summary'
-	TaskReport.sumary
+	TaskReport.summary
 # when 'info'
 else
 	show_usage_message

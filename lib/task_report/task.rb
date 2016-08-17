@@ -29,7 +29,7 @@ module TaskReport
       @id = id || SecureRandom.hex(4)
     end
 
-    def to_hash
+    def to_h
       {
         id: @id,
         description: @description,

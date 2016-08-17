@@ -106,10 +106,10 @@ module TaskReport
         return
       end
 
-      puts "#{@description} Summary"
+      puts "#{User.name} Task Report #{@date.strftime('%Y-%m-%d')}"
 
-      @task.each do |task|
-        puts "#{task.description}"
+      @tasks.each do |task|
+        puts "'#{task.description}'"
         puts "  - #{task.duration.to_s}"
       end
     end
@@ -123,19 +123,30 @@ module TaskReport
     end
 
     private
-      def initialize(description:, json_file_name:, gist_id: nil, existing_json_content: [])
+      def initialize(description:, json_file_name:, gist_id: nil, existing_json_content: {})
         @description = description
         @json_file_name = json_file_name
         @gist_id = gist_id
 
+        @date = Time.parse(
+          existing_json_content.fetch('date', Time.now.strftime('%Y-%m-%d %z'))
+        )
+
         @tasks =
-          existing_json_content.map do |hash|
+          existing_json_content.fetch('tasks', []).map do |hash|
             Task.from_existing_tasks(hash)
           end
       end
 
+      def to_h
+        {
+          date: @date.strftime('%Y-%m-%d %z'),
+          tasks: @tasks.map(&:to_h)
+        }
+      end
+
       def task_json
-        JSON.pretty_generate(@tasks.map(&:to_hash))
+        JSON.pretty_generate(to_h)
       end
 
       def save_new_gist!
