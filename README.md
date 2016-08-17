@@ -41,6 +41,9 @@ Use `task` as follows:
   `task current`
     - lists the currently ongoing task
 
+  `task summary`
+    - prints a task summary to the command line
+
   `task help`
     - shows this message
 ```
@@ -57,7 +60,8 @@ Use `task` as follows:
 - [ ] confirmation messages for `delete`
 - [x] `list`
 - [x] `current`
-- [ ] `summary`
+- [x] basic `summary`
+- [ ] gist `summary`
 - [x] rename to `task_report`
 - [ ] setup install
 - [ ] add jira support?

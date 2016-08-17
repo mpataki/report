@@ -20,7 +20,7 @@ def show_usage_message(exit_status = 0)
 	puts "  `task current`"
 	puts "    - lists the currently ongoing task\n\n"
 	puts "  `task summary`"
-	puts "    - prints a task summary to the command line"
+	puts "    - prints a task summary to the command line\n\n"
 	puts "  `task help`"
 	puts "    - shows this message"
 
