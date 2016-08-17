@@ -1,12 +1,23 @@
-# Task!
+This repo is currently under construction. Don't use it while this message is here.
+
+## Description
+
+This tool enables you to track where your time goes via a private [gist](https://gist.github.com). The data itself is stored as json, and a formatted summary can be generated and shared (TODO).
 
 ## Installation
 
-TODO
+1. [Make a github / gist account.](https://github.com/join?return_to=https%3A%2F%2Fgist.github.com%2F%3Fsignup%3Dtrue&source=header-gist)
+2. [Generate a Person Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) for gist account.
+3. From a shell:
+```shell
+gem install task_report
+```
+
+4. Add your github user name and personal access token to the config file. (more details to come.)
 
 ## Usage
 
-```shell
+```
 Use `task` as follows:
 
   `task start TASK-DESCRIPTION`
@@ -47,7 +58,7 @@ Use `task` as follows:
 - [x] `list`
 - [x] `current`
 - [ ] `summary`
-- [x] rename to `task`
+- [x] rename to `task_report`
 - [ ] setup install
 
 ## License
