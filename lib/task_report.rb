@@ -75,6 +75,13 @@ module TaskReport
       puts 'Something went wrong. There are multiple ongoing tasks.'
     end
 
+    def summary
+      return if no_gist?
+
+      @report ||= Report.create_from_gist(report_gist)
+      @report.print_summary
+    end
+
     private
       def report_gist
         @report_gist ||=

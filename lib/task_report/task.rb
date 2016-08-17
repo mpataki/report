@@ -41,6 +41,14 @@ module TaskReport
       "Task #{@id}, '#{@description}'"
     end
 
+    def duration
+      Duration.new(
+        @time.inject(0) do |sum, time|
+          sum + ( (time[:end] || Time.now) - time[:start] )
+        end
+      )
+    end
+
     def stop
       return unless @time.last[:end].nil?
       puts "Stopping #{self.to_s}"

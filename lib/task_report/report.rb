@@ -100,6 +100,20 @@ module TaskReport
       end
     end
 
+    def print_summary
+      if @tasks.empty?
+        puts 'There are no tasks reported for today.'
+        return
+      end
+
+      puts "#{@description} Summary"
+
+      @task.each do |task|
+        puts "#{task.description}"
+        puts "  - #{task.duration.to_s}"
+      end
+    end
+
     def save_to_gist!
       if @gist_id
         edit_existing_gist!

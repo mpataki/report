@@ -19,6 +19,8 @@ def show_usage_message(exit_status = 0)
 	puts "    - if 'gist' is passed, then the whole report gist for today will be deleted\n\n"
 	puts "  `task current`"
 	puts "    - lists the currently ongoing task\n\n"
+	puts "  `task summary`"
+	puts "    - prints a task summary to the command line"
 	puts "  `task help`"
 	puts "    - shows this message"
 
@@ -41,8 +43,9 @@ when 'delete'
 	TaskReport.delete(ARGV[1])
 when 'current'
 	TaskReport.current
+when 'summary'
+	TaskReport.sumary
 # when 'info'
-# when 'summary'
 else
 	show_usage_message
 end
