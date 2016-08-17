@@ -60,6 +60,8 @@ Use `task` as follows:
 - [ ] `summary`
 - [x] rename to `task_report`
 - [ ] setup install
+- [ ] add jira support?
+  - at the very least, a ticket field
 
 ## License
 
