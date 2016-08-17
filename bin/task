@@ -28,27 +28,21 @@ end
 TaskReport::User.name = 'mpataki' # TODO: pull this from a config (maybe even .git_config ?)
 TaskReport::User.api_token = File.read('gist_token').strip
 
-begin
-	case ARGV[0]
-	when 'list'
-		TaskReport.list
-	when 'start'
-		TaskReport.start(ARGV[1])
-	when 'stop'
-		TaskReport.stop
-	when 'continue'
-		TaskReport.continue(ARGV[1])
-	when 'delete'
-		TaskReport.delete(ARGV[1])
-	when 'current'
-		TaskReport.current
-	# when 'info'
-	# when 'summary'
-	else
-		show_usage_message
-	end
-rescue TaskReport::Report::TaskAlreadyTracked
-	puts "Task '#{ARGV[0]}' is already being tracked. Continuing the task."
-	ARGV[0] = 'continue'
-	retry
+case ARGV[0]
+when 'list'
+	TaskReport.list
+when 'start'
+	TaskReport.start(ARGV[1])
+when 'stop'
+	TaskReport.stop
+when 'continue'
+	TaskReport.continue(ARGV[1])
+when 'delete'
+	TaskReport.delete(ARGV[1])
+when 'current'
+	TaskReport.current
+# when 'info'
+# when 'summary'
+else
+	show_usage_message
 end
