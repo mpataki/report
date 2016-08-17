@@ -93,7 +93,7 @@ module TaskReport
       def no_gist?
         if report_gist.nil?
           puts 'No report exists for today - nothing to do.'
-          puts 'See `report help` for usage info.'
+          puts 'See `task help` for usage info.'
           return true
         end
 
