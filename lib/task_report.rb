@@ -17,8 +17,8 @@ module TaskReport
       @report.start_task(new_task_description)
       @report.save_to_gist!
     rescue Report::TaskAlreadyTracked
-    	puts "Task '#{new_task_description}' is already being tracked. Continuing the task."
-    	continue(new_task_description)
+      puts "Task '#{new_task_description}' is already being tracked. Continuing the task."
+      continue(new_task_description)
     end
 
     def stop

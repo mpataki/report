@@ -3,28 +3,28 @@
 require 'task_report'
 
 def show_usage_message(exit_status = 0)
-	puts "Use `task` as follows:\n\n"
-	puts "  `task start TASK-DESCRIPTION`"
-	puts "    - finds or create a new gist for today"
-	puts "    - adds a new item with the provided TASK-DESCRIPTION\n\n"
-	puts "  `task list`"
-	puts "    - Lists all of today's tasks\n\n"
-	puts "  `task stop`"
-	puts "    - stops time tracking the current task, if it exists\n\n"
-	puts "  `task continue [TASK-ID, TASK-DESCRIPTION]`"
-	puts "    - continues tracking the provided task, or latest task if none if provided\n\n"
-	puts "  `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`"
-	puts "    - deletes the provided task if it exists\n"
-	puts "    - if 'today' is passed, then all tasks in today's report will be deleted\n"
-	puts "    - if 'gist' is passed, then the whole report gist for today will be deleted\n\n"
-	puts "  `task current`"
-	puts "    - lists the currently ongoing task\n\n"
-	puts "  `task summary`"
-	puts "    - prints a task summary to the command line\n\n"
-	puts "  `task help`"
-	puts "    - shows this message"
+  puts "Use `task` as follows:\n\n"
+  puts "  `task start TASK-DESCRIPTION`"
+  puts "    - finds or create a new gist for today"
+  puts "    - adds a new item with the provided TASK-DESCRIPTION\n\n"
+  puts "  `task list`"
+  puts "    - Lists all of today's tasks\n\n"
+  puts "  `task stop`"
+  puts "    - stops time tracking the current task, if it exists\n\n"
+  puts "  `task continue [TASK-ID, TASK-DESCRIPTION]`"
+  puts "    - continues tracking the provided task, or latest task if none if provided\n\n"
+  puts "  `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`"
+  puts "    - deletes the provided task if it exists\n"
+  puts "    - if 'today' is passed, then all tasks in today's report will be deleted\n"
+  puts "    - if 'gist' is passed, then the whole report gist for today will be deleted\n\n"
+  puts "  `task current`"
+  puts "    - lists the currently ongoing task\n\n"
+  puts "  `task summary`"
+  puts "    - prints a task summary to the command line\n\n"
+  puts "  `task help`"
+  puts "    - shows this message"
 
-	exit exit_status
+  exit exit_status
 end
 
 TaskReport::User.name = 'mpataki' # TODO: pull this from a config (maybe even .git_config ?)
@@ -32,20 +32,20 @@ TaskReport::User.api_token = File.read('gist_token').strip
 
 case ARGV[0]
 when 'list'
-	TaskReport.list
+  TaskReport.list
 when 'start'
-	TaskReport.start(ARGV[1])
+  TaskReport.start(ARGV[1])
 when 'stop'
-	TaskReport.stop
+  TaskReport.stop
 when 'continue'
-	TaskReport.continue(ARGV[1])
+  TaskReport.continue(ARGV[1])
 when 'delete'
-	TaskReport.delete(ARGV[1])
+  TaskReport.delete(ARGV[1])
 when 'current'
-	TaskReport.current
+  TaskReport.current
 when 'summary'
-	TaskReport.summary
+  TaskReport.summary
 # when 'info'
 else
-	show_usage_message
+  show_usage_message
 end
