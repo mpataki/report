@@ -6,13 +6,14 @@ This tool enables you to track where your time goes via a private [gist](https:/
 
 ## Installation
 
-1. [Make a github / gist account.](https://github.com/join?return_to=https%3A%2F%2Fgist.github.com%2F%3Fsignup%3Dtrue&source=header-gist)
-2. [Generate a Person Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) for gist account.
-3. From a shell:
+- [Make a github / gist account.](https://github.com/join?return_to=https%3A%2F%2Fgist.github.com%2F%3Fsignup%3Dtrue&source=header-gist)
+- [Generate a Person Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) for gist account.
+- From a shell:
 ```shell
 gem install task_report
 ```
-4. Add your github user name and personal access token to the config file. (more details to come.)
+
+- Add your github user name and personal access token to the config file. (more details to come.)
 
 ## Usage
 
