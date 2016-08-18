@@ -13,7 +13,13 @@ This tool enables you to track where your time goes via a private [gist](https:/
 gem install task_report
 ```
 
-- Add your github user name and personal access token to the config file. (more details to come.)
+- Add your github user name and personal access token a YAML config file located at `~/.task_report_config`.
+
+Example configuration:
+```
+user: you_github_username
+personal_access_token: 12345678abcdefghi9101112131415jklmnop
+```
 
 ## Usage
 
@@ -61,11 +67,12 @@ Use `task` as follows:
 - [x] `list`
 - [x] `current`
 - [x] basic `summary`
+- [x] add configuration file support
 - [ ] gist `summary`
-- [x] rename to `task_report`
 - [ ] setup install
 - [ ] add jira support?
   - at the very least, a ticket field
+- [ ] allow `summary` to take a gist id, so you can retroactively generate summaries
 
 ## License
 
