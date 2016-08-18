@@ -1,6 +1,6 @@
 ## Description
 
-This tool enables you to track where your time goes via a private [gist](https://gist.github.com). The data itself is stored in a gist as json, and a formatted summary can be generated and shared (TODO, right now there's only a stdout summary). This means that task tracking is not tied to any specific machine, but rather a github account.
+This tool enables you to track where your time goes via a private [gist](https://gist.github.com). The data itself is stored in a gist as json, and a formatted summary can be generated and shared (coming soon, actually. Right now there is only a stdout summary). This means that task tracking is not tied to any specific machine, but rather a github account.
 
 ## Installation
 
@@ -59,7 +59,7 @@ Use `task` as follows:
 ## TODO:
 
 - [x] `continue`
-- [ ] `info`
+- [ ] `info` - display information about the current gist file (url, etc)
 - [x] `delete`
 - [ ] confirmation messages for `delete`
 - [x] `list`
