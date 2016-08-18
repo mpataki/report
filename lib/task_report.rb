@@ -1,3 +1,4 @@
+require 'yaml'
 require 'task_report/user'
 require 'task_report/gist'
 require 'task_report/task'
@@ -6,6 +7,28 @@ require 'task_report/duration'
 
 module TaskReport
   class << self
+    def read_config
+      config_path = File.expand_path('~/.task_report_config')
+      config = YAML.load(File.read(config_path))
+      TaskReport::User.name = config.fetch('user')
+      TaskReport::User.api_token = config.fetch('personal_access_token')
+    rescue Errno::ENOENT
+      puts 'Config file not found. It should be located at ~/.task_report_config.'
+      puts 'See https://github.com/mpataki/task_report for help.'
+      puts 'Exiting'
+      exit 1
+    rescue Psych::SyntaxError
+      puts 'The config file must be valid yaml syntax.'
+      puts 'Exiting'
+      exit 1
+    rescue KeyError
+      puts 'Config key not found.'
+      puts 'Required configuration keys are `user` and `personal_access_token`'
+      puts 'See an example at https://github.com/mpataki/task_report'
+      puts 'Exiting'
+      exit 1
+    end
+
     def start(new_task_description)
       @report ||=
         if report_gist.nil?

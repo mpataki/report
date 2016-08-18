@@ -1,6 +1,5 @@
 #! /usr/bin/env ruby
 
-require 'yaml'
 require 'task_report'
 
 def show_usage_message(exit_status = 0)
@@ -37,27 +36,7 @@ def show_usage_message(exit_status = 0)
   exit exit_status
 end
 
-begin
-  config_path = File.expand_path('~/.task_report_config')
-  config = YAML.load(File.read(config_path))
-  TaskReport::User.name = config.fetch('user')
-  TaskReport::User.api_token = config.fetch('personal_access_token')
-rescue Errno::ENOENT
-  puts 'Config file not found. It should be located at ~/.task_report_config.'
-  puts 'See https://github.com/mpataki/task_report for help.'
-  puts 'Exiting'
-  exit 1
-rescue Psych::SyntaxError
-  puts 'The config file must be valid yaml syntax.'
-  puts 'Exiting'
-  exit 1
-rescue KeyError
-  puts 'Config key not found.'
-  puts 'Required configuration keys are `user` and `personal_access_token`'
-  puts 'See an example at https://github.com/mpataki/task_report'
-  puts 'Exiting'
-  exit 1
-end
+TaskReport.read_config
 
 case ARGV[0]
 when 'list'
@@ -74,7 +53,6 @@ when 'current'
   TaskReport.current
 when 'summary'
   TaskReport.summary
-# when 'info'
 else
   show_usage_message
 end
