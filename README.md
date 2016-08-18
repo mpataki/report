@@ -2,18 +2,18 @@ This repo is currently under construction. Don't use it while this message is he
 
 ## Description
 
-This tool enables you to track where your time goes via a private [gist](https://gist.github.com). The data itself is stored in a gist as json, and a formatted summary can be generated and shared (TODO). This means that task tracking is not tied to any specific machine, but rather a github account.
+This tool enables you to track where your time goes via a private [gist](https://gist.github.com). The data itself is stored in a gist as json, and a formatted summary can be generated and shared (TODO, right now there's only a stdout summary). This means that task tracking is not tied to any specific machine, but rather a github account.
 
 ## Installation
 
 - [Make a github / gist account.](https://github.com/join?return_to=https%3A%2F%2Fgist.github.com%2F%3Fsignup%3Dtrue&source=header-gist)
-- [Generate a Personal Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) for gist account.
+- [Generate a Personal Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) that has read / write access to your gists.
 - From a shell:
 ```shell
 gem install task_report
 ```
 
-- Add your github user name and personal access token a YAML config file located at `~/.task_report_config`.
+- Add your *github user name* and *personal access token* a YAML config file located at `~/.task_report_config`.
 
 Example configuration:
 ```
@@ -27,11 +27,8 @@ personal_access_token: 12345678abcdefghi9101112131415jklmnop
 Use `task` as follows:
 
   `task start TASK-DESCRIPTION`
-    - finds or create a new gist for today
+    - finds or creates a new gist for today
     - adds a new item with the provided TASK-DESCRIPTION
-
-  `task list`
-    - Lists all of today's tasks
 
   `task stop`
     - stops time tracking the current task, if it exists
@@ -39,16 +36,19 @@ Use `task` as follows:
   `task continue [TASK-ID, TASK-DESCRIPTION]`
     - continues tracking the provided task, or latest task if none if provided
 
+  `task current`
+    - lists the currently ongoing task
+
+  `task list`
+    - Lists all of today's tasks
+
+  `task summary`
+    - prints a task summary to the command line
+
   `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`
     - deletes the provided task if it exists
     - if 'today' is passed, then all tasks in today's report will be deleted
     - if 'gist' is passed, then the whole report gist for today will be deleted
-
-  `task current`
-    - lists the currently ongoing task
-
-  `task summary`
-    - prints a task summary to the command line
 
   `task help`
     - shows this message

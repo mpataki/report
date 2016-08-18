@@ -8,11 +8,8 @@ def show_usage_message(exit_status = 0)
 "Use `task` as follows:
 
   `task start TASK-DESCRIPTION`
-    - finds or create a new gist for today
+    - finds or creates a new gist for today
     - adds a new item with the provided TASK-DESCRIPTION
-
-  `task list`
-    - Lists all of today's tasks
 
   `task stop`
     - stops time tracking the current task, if it exists
@@ -20,16 +17,19 @@ def show_usage_message(exit_status = 0)
   `task continue [TASK-ID, TASK-DESCRIPTION]`
     - continues tracking the provided task, or latest task if none if provided
 
+  `task current`
+    - lists the currently ongoing task
+
+  `task list`
+    - Lists all of today's tasks
+
+  `task summary`
+    - prints a task summary to the command line
+
   `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`
     - deletes the provided task if it exists
     - if 'today' is passed, then all tasks in today's report will be deleted
     - if 'gist' is passed, then the whole report gist for today will be deleted
-
-  `task current`
-    - lists the currently ongoing task
-
-  `task summary`
-    - prints a task summary to the command line
 
   `task help`
     - shows this message"
