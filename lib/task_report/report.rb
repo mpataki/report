@@ -30,6 +30,7 @@ module TaskReport
           description: gist_description,
           json_file_name: json_file_name,
           gist_id: gist['id'],
+          gist_html_url: gist['html_url'],
           existing_json_content: Gist.file_content(raw_url)
         )
       end
@@ -114,19 +115,40 @@ module TaskReport
       end
     end
 
+    def gist_summary
+      if @tasks.empty?
+        puts 'There are no tasks reported for today.'
+        return
+      end
+
+      puts 'Creating a gist summary.'
+
+      Gist.edit(@gist_id,
+        description: @description, # do we actually need this? Seems odd...
+        files: {
+          'summary.md' => {
+            content: gist_summary_content
+          }
+        }
+      )
+
+      puts "#{@gist_html_url}#file-summary-md"
+    end
+
     def save_to_gist!
       if @gist_id
-        edit_existing_gist!
+        edit_existing_data_gist!
       else
-        save_new_gist!
+        save_new_data_gist!
       end
     end
 
     private
-      def initialize(description:, json_file_name:, gist_id: nil, existing_json_content: {})
+      def initialize(description:, json_file_name:, gist_id: nil, gist_html_url: nil, existing_json_content: {})
         @description = description
         @json_file_name = json_file_name
         @gist_id = gist_id
+        @gist_html_url = gist_html_url
 
         @date = Time.parse(
           existing_json_content.fetch('date', Time.now.strftime('%Y-%m-%d %z'))
@@ -149,7 +171,7 @@ module TaskReport
         JSON.pretty_generate(to_h)
       end
 
-      def save_new_gist!
+      def save_new_data_gist!
         puts "Starting a new report gist for the day."
 
         Gist.create(
@@ -163,7 +185,7 @@ module TaskReport
         )
       end
 
-      def edit_existing_gist!
+      def edit_existing_data_gist!
         puts "Saving to today's report gist."
 
         Gist.edit(@gist_id,
@@ -197,6 +219,17 @@ module TaskReport
 
       def ensure_only_one_ongoing_task!
         raise MultipleOngoingTasks if @tasks.count(&:ongoing?) > 1
+      end
+
+      def gist_summary_content
+        lines = ["## #{User.name} Task Report #{@date.strftime('%Y-%m-%d')}", '']
+
+        @tasks.each do |task|
+          lines << "- '#{task.description}'"
+          lines << "  - #{task.duration.to_s}"
+        end
+
+        lines.join("\n")
       end
   end
 end

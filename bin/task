@@ -22,8 +22,10 @@ def show_usage_message(exit_status = 0)
   `task list`
     - Lists all of today's tasks
 
-  `task summary`
+  `task summary [--gist, -g]`
     - prints a task summary to the command line
+    - if the `--gist` or `-g` options are used, creates a markdown gist summary
+      and prints the link to stdout
 
   `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`
     - deletes the provided task if it exists
@@ -52,7 +54,7 @@ when 'delete'
 when 'current'
   TaskReport.current
 when 'summary'
-  TaskReport.summary
+  TaskReport.summary(ARGV[1])
 else
   show_usage_message
 end
