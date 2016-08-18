@@ -1,0 +1,20 @@
+machine:
+  ruby:
+    version: 2.3.0
+
+dependencies:
+  override:
+    - echo '---' >> $HOME/.gem/credentials
+    - 'echo ":rubygems_api_key: $RUBYGEMS_CREDENTIAL" >> $HOME/.gem/credentials'
+    - chmod 0600 $HOME/.gem/credentials
+
+test:
+  override:
+    - echo 'no tests'
+
+deployment:
+  release:
+    branch: master
+    commands:
+      - gem build task_report.gemspec
+      - gem push $(echo task_report*.gem)
