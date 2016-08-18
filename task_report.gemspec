@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Mat Pataki']
   spec.email         = ['matpataki@gmail.com']
 
-  spec.summary       = 'Task tracker'
+  spec.summary       = 'Task tracker with gist support'
   spec.homepage      = 'https://github.com/mpataki/task_report'
   spec.license       = 'MIT'
 
