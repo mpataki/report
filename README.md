@@ -40,8 +40,10 @@ Use `task` as follows:
   `task list`
     - Lists all of today's tasks
 
-  `task summary`
+  `task summary [--gist, -g]`
     - prints a task summary to the command line
+    - if the `--gist` or `-g` options are used, creates a markdown gist summary
+      and prints the link to stdout
 
   `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`
     - deletes the provided task if it exists
@@ -59,18 +61,20 @@ Use `task` as follows:
 ## TODO:
 
 - [x] `continue`
-- [ ] `info` - display information about the current gist file (url, etc)
 - [x] `delete`
-- [ ] confirmation messages for `delete`
 - [x] `list`
 - [x] `current`
 - [x] basic `summary`
+- [x] gist `summary`
 - [x] add configuration file support
-- [ ] gist `summary`
 - [x] setup install
+- [ ] `info` - display information about the current gist file (url, etc)
+- [ ] confirmation messages for `delete`
 - [ ] add jira support?
   - at the very least, a ticket field
+  - stretch goal: add the ability to make new issues, and update time estimates for existing ones
 - [ ] allow `summary` to take a gist id, so you can retroactively generate summaries
+- [ ] add User.name as well as User.github_username, so we an pretty print
 
 ## License
 
