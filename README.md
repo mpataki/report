@@ -52,7 +52,7 @@ Use `task` as follows:
     - shows this message
 ```
 
-## System Requirements
+## Dependencies
 
 - ruby >= 2.3.0
 
