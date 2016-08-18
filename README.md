@@ -69,7 +69,7 @@ Use `task` as follows:
 - [x] basic `summary`
 - [x] add configuration file support
 - [ ] gist `summary`
-- [ ] setup install
+- [x] setup install
 - [ ] add jira support?
   - at the very least, a ticket field
 - [ ] allow `summary` to take a gist id, so you can retroactively generate summaries
