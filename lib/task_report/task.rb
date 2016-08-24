@@ -5,7 +5,7 @@ module TaskReport
   class Task
     TaskOngoing = Class.new StandardError
 
-    attr_reader :id, :description
+    attr_reader :id, :description, :notes
 
     def self.from_existing_tasks(hash)
       time =
@@ -19,21 +19,24 @@ module TaskReport
       self.new(
         id: hash['id'],
         description: hash['description'],
-        time: time
+        time: time,
+        notes: hash['notes']
       )
     end
 
-    def initialize(description:, time: nil, id: nil)
+    def initialize(description:, time: nil, id: nil, notes: nil)
       @description = description
       @time = time || [{ start: Time.now, end: nil }]
       @id = id || SecureRandom.hex(4)
+      @notes = notes || []
     end
 
     def to_h
       {
         id: @id,
         description: @description,
-        time: @time
+        time: @time,
+        notes: @notes
       }
     end
 
@@ -67,6 +70,10 @@ module TaskReport
 
     def ongoing?
       @time.last[:end].nil?
+    end
+
+    def add_note(note)
+      @notes << note
     end
   end
 end

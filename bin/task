@@ -59,6 +59,8 @@ when 'current'
   TaskReport.current
 when 'summary'
   TaskReport.summary(ARGV[1])
+when 'note'
+  TaskReport.note(ARGV[1], ARGV[2])
 else
   show_usage_message
 end
