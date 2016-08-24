@@ -32,6 +32,10 @@ def show_usage_message(exit_status = 0)
     - if 'today' is passed, then all tasks in today's report will be deleted
     - if 'gist' is passed, then the whole report gist for today will be deleted
 
+  `task note TASK_ID TASK_NOTE`
+    - adds arbitrary note TASK_NOTE to task TASK_ID
+    - these notes will be appear in summaries as line items (markdown supported)
+
   `task help`
     - shows this message"
 
@@ -55,6 +59,8 @@ when 'current'
   TaskReport.current
 when 'summary'
   TaskReport.summary(ARGV[1])
+when 'note'
+  TaskReport.note(ARGV[1], ARGV[2])
 else
   show_usage_message
 end

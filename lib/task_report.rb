@@ -115,6 +115,17 @@ module TaskReport
       end
     end
 
+    def note(task_id, note)
+      return if no_gist?
+
+      @report ||= Report.create_from_gist(report_gist)
+      @report.add_note(task_id, note)
+
+      @report.save_to_gist!
+    rescue Report::TaskDNE
+      puts "Task '#{identifier}' does not exist - nothing to do."
+    end
+
     private
       def report_gist
         @report_gist ||=

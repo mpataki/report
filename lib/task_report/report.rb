@@ -112,6 +112,10 @@ module TaskReport
       @tasks.each do |task|
         puts "'#{task.description}'"
         puts "  - #{task.duration.to_s}"
+
+        task.notes.each do |note|
+          puts "  - #{note}"
+        end
       end
     end
 
@@ -141,6 +145,14 @@ module TaskReport
       else
         save_new_data_gist!
       end
+    end
+
+    def add_note(task_id, note)
+      task = find_task_by_id(task_id)
+      raise TaskDNE if task.nil?
+
+      task.add_note(note)
+      puts "Note added to #{task.to_s}"
     end
 
     private
@@ -227,6 +239,10 @@ module TaskReport
         @tasks.each do |task|
           lines << "- '#{task.description}'"
           lines << "  - #{task.duration.to_s}"
+
+          task.notes.each do |note|
+            lines << "  - #{note}"
+          end
         end
 
         lines.join("\n")
