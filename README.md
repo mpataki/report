@@ -50,6 +50,10 @@ Use `task` as follows:
     - if 'today' is passed, then all tasks in today's report will be deleted
     - if 'gist' is passed, then the whole report gist for today will be deleted
 
+  `task note TASK_ID TASK_NOTE`
+    - adds arbitrary note TASK_NOTE to task TASK_ID
+    - these notes will be appear in summaries as line items (markdown supported)
+
   `task help`
     - shows this message
 ```
@@ -57,24 +61,6 @@ Use `task` as follows:
 ## Dependencies
 
 - ruby >= 2.3.0
-
-## TODO:
-
-- [x] `continue`
-- [x] `delete`
-- [x] `list`
-- [x] `current`
-- [x] basic `summary`
-- [x] gist `summary`
-- [x] add configuration file support
-- [x] setup install
-- [ ] `info` - display information about the current gist file (url, etc)
-- [ ] confirmation messages for `delete`
-- [ ] add jira support?
-  - at the very least, a ticket field
-  - stretch goal: add the ability to make new issues, and update time estimates for existing ones
-- [ ] allow `summary` to take a gist id, so you can retroactively generate summaries
-- [ ] add User.name as well as User.github_username, so we an pretty print
 
 ## License
 
