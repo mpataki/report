@@ -60,7 +60,7 @@ Use `task` as follows:
 
 ## Dependencies
 
-- ruby >= 2.3.0
+- ruby >= 2.2.3
 
 ## License
 
