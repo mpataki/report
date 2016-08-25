@@ -30,12 +30,12 @@ module TaskReport
     end
 
     def start(new_task_description)
-      @report ||=
-        if report_gist.nil?
-          Report.create(new_task_description: new_task_description)
-        else
-          Report.create_from_gist(report_gist).tap(&:stop_all_tasks)
-        end
+      if report_gist.nil?
+        @report ||= Report.create(new_task_description: new_task_description)
+      else
+        @report ||= Report.create_from_gist(report_gist)
+        @report.stop_all_tasks
+      end
 
       @report.start_task(new_task_description)
       @report.save_to_gist!
