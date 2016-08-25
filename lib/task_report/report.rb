@@ -155,6 +155,15 @@ module TaskReport
       puts "Note added to #{task.to_s}"
     end
 
+    def total
+      total_time_in_seconds =
+        @tasks.inject(0) do |sum, task|
+          sum + task.total_time_in_seconds
+        end
+
+      puts Duration.new(total_time_in_seconds).to_s
+    end
+
     private
       def initialize(description:, json_file_name:, gist_id: nil, gist_html_url: nil, existing_json_content: {})
         @description = description

@@ -45,11 +45,13 @@ module TaskReport
     end
 
     def duration
-      Duration.new(
-        @time.inject(0) do |sum, time|
-          sum + ( (time[:end] || Time.now) - time[:start] )
-        end
-      )
+      Duration.new(total_time_in_seconds)
+    end
+
+    def total_time_in_seconds
+      @time.inject(0) do |sum, time|
+        sum + ( (time[:end] || Time.now) - time[:start] )
+      end
     end
 
     def stop
