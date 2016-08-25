@@ -252,7 +252,7 @@ module TaskReport
         end
 
         lines << ''
-        lines << "Total time tracked: #{total_duration.to_s}"
+        lines << "#### Total time tracked: #{total_duration.to_s}"
 
         lines.join("\n")
       end
