@@ -126,6 +126,13 @@ module TaskReport
       puts "Task '#{identifier}' does not exist - nothing to do."
     end
 
+    def total
+      return if no_gist?
+
+      @report ||= Report.create_from_gist(report_gist)
+      @report.total
+    end
+
     private
       def report_gist
         @report_gist ||=

@@ -36,6 +36,9 @@ def show_usage_message(exit_status = 0)
     - adds arbitrary note TASK_NOTE to task TASK_ID
     - these notes will be appear in summaries as line items (markdown supported)
 
+  `task total`
+    - displays the total tracked time for today
+
   `task help`
     - shows this message"
 
@@ -61,6 +64,8 @@ when 'summary'
   TaskReport.summary(ARGV[1])
 when 'note'
   TaskReport.note(ARGV[1], ARGV[2])
+when 'total'
+  TaskReport.total
 else
   show_usage_message
 end

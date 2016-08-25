@@ -54,6 +54,9 @@ Use `task` as follows:
     - adds arbitrary note TASK_NOTE to task TASK_ID
     - these notes will be appear in summaries as line items (markdown supported)
 
+  `task total`
+    - displays the total tracked time for today
+
   `task help`
     - shows this message
 ```

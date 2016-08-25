@@ -116,6 +116,8 @@ module TaskReport
         task.notes.each do |note|
           puts "  - #{note}"
         end
+
+        puts "\nTotal time tracked: #{total_duration.to_s}"
       end
     end
 
@@ -153,6 +155,10 @@ module TaskReport
 
       task.add_note(note)
       puts "Note added to #{task.to_s}"
+    end
+
+    def total
+      puts total_duration.to_s
     end
 
     private
@@ -245,7 +251,19 @@ module TaskReport
           end
         end
 
+        lines << ''
+        lines << "#### Total time tracked: #{total_duration.to_s}"
+
         lines.join("\n")
+      end
+
+      def total_duration
+        total_time_in_seconds =
+          @tasks.inject(0) do |sum, task|
+            sum + task.total_time_in_seconds
+          end
+
+        Duration.new(total_time_in_seconds)
       end
   end
 end

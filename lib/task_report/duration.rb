@@ -11,7 +11,12 @@ module TaskReport
       min %= 60
       hour, _ = @seconds.divmod(3600)
 
-      "#{hour} hours, #{min} minutes, #{sec} seconds"
+      result = []
+      result << "#{hour} hours"  if hour > 0
+      result << "#{min} mins"    if min > 0
+      result << "#{sec} seconds" if sec > 0
+
+      result.join(', ')
     end
   end
 end
