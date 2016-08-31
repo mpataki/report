@@ -98,20 +98,15 @@ module TaskReport
       puts 'Something went wrong. There are multiple ongoing tasks.'
     end
 
-    def summary(options)
+    def summary(gist, from, to)
       return if no_gist?
 
       @report ||= Report.create_from_gist(report_gist)
 
-      if ['--gist', '-g'].include? options
-        @report.gist_summary
+      if gist
+        @report.gist_summary(from, to)
       else
-        unless options.nil?
-          puts "The #{options} option is not recorgnized.\n"\
-               "Printing the summary to the stdout.\n\n"
-        end
-
-        @report.print_summary
+        @report.print_summary(from, to)
       end
     end
 

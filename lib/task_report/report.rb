@@ -101,7 +101,7 @@ module TaskReport
       end
     end
 
-    def print_summary
+    def print_summary(from, to)
       if @tasks.empty?
         puts 'There are no tasks reported for today.'
         return
@@ -121,7 +121,7 @@ module TaskReport
       end
     end
 
-    def gist_summary
+    def gist_summary(from, to)
       if @tasks.empty?
         puts 'There are no tasks reported for today.'
         return
