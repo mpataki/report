@@ -40,10 +40,11 @@ Use `task` as follows:
   `task list`
     - Lists all of today's tasks
 
-  `task summary [--gist, -g]`
+  `task summary [--gist, -g] [{--from, -f} YYYY-MM-DD {--until, -u} YYYY-MM-DD]`
     - prints a task summary to the command line
     - if the `--gist` or `-g` options are used, creates a markdown gist summary
       and prints the link to stdout
+    - if `--from` and `--until` options are passed, then a gist will be made including any tracked time between the two dates
 
   `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`
     - deletes the provided task if it exists
