@@ -8,8 +8,8 @@ module TaskReport
     attr_reader :gist_id
 
     class << self
-      def gist_description
-        "#{User.name}_report_#{Time.now.strftime('%Y-%m-%d')}"
+      def gist_description(time = Time.now)
+        "#{User.name}_report_#{time.strftime('%Y-%m-%d')}"
       end
 
       def json_file_name

@@ -99,15 +99,39 @@ module TaskReport
     end
 
     def summary(gist, from, to)
+      return range_summary_gist(gist, from, to) if from && to && gist
+      return range_summary(from, to) if from && to
       return if no_gist?
+
+      if from || to
+        puts "incomeplete summary range provided, printing today's summary"
+      end
 
       @report ||= Report.create_from_gist(report_gist)
 
       if gist
-        @report.gist_summary(from, to)
+        @report.gist_summary
       else
-        @report.print_summary(from, to)
+        @report.print_summary
       end
+    end
+
+    def range_summary(from, to)
+      from_time = Time.parse(from)
+      from_epoch = from_time.to_i
+      to_epoch = Time.parse(from).to_i
+      seconds_in_a_day = 86400
+      descriptions = []
+
+      (from_epoch..to_epoch).step(seconds_in_a_day) do |epoch|
+        descriptions = Report.gist_description(Time.at(epoch))
+      end
+
+      gists = Gist.find_gists_by_descriptions(descriptions, Time.parse(from_time))
+      reports = gists.map { |gist| Report.create_from_gist(gist) }
+    end
+
+    def range_summary_gist(gist, from, to)
     end
 
     def note(task_id, note)
