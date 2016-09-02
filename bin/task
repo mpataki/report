@@ -2,7 +2,12 @@
 
 require 'task_report'
 
-def show_usage_message(exit_status = 0)
+def show_usage_message(additional_message = nil, exit_status = 0)
+  if additional_message
+    puts additional_message
+    puts ''
+  end
+
   puts \
 "Use `task` as follows:
 
@@ -22,10 +27,11 @@ def show_usage_message(exit_status = 0)
   `task list`
     - Lists all of today's tasks
 
-  `task summary [--gist, -g]`
+  `task summary [--gist, -g] [{--from, -f} YYYY-MM-DD {--until, -u} YYYY-MM-DD]`
     - prints a task summary to the command line
     - if the `--gist` or `-g` options are used, creates a markdown gist summary
       and prints the link to stdout
+    - if `--from` and `--until` options are passed, then a gist will be made including any tracked time between the two dates
 
   `task delete {TASK-ID, TASK-DESCRIPTION, today, gist}`
     - deletes the provided task if it exists
@@ -45,6 +51,31 @@ def show_usage_message(exit_status = 0)
   exit exit_status
 end
 
+def parse_summary_args
+  gist = from = to = nil
+
+  ARGV.each_with_index do |arg, i|
+    case arg
+    when '--gist', '-g'
+      gist = true
+    when '--from', '-f'
+      if ARGV[i+1] =~ /\d{4}-\d{2}-\d{2}/ # must be a date
+        from = ARGV[i+1]
+      else
+        show_usage_message('summary date arguments must have the format: YYYY-MM-DD')
+      end
+    when '--until', '-u'
+      if ARGV[i+1] =~ /\d{4}-\d{2}-\d{2}/ # must be a date
+        to = ARGV[i+1]
+      else
+        show_usage_message('summary date arguments must have the format: YYYY-MM-DD')
+      end
+    end
+  end
+
+  [gist, from, to]
+end
+
 TaskReport.read_config
 
 case ARGV[0]
@@ -61,7 +92,7 @@ when 'delete'
 when 'current'
   TaskReport.current
 when 'summary'
-  TaskReport.summary(ARGV[1])
+  TaskReport.summary(*parse_summary_args)
 when 'note'
   TaskReport.note(ARGV[1], ARGV[2])
 when 'total'

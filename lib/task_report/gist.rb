@@ -6,16 +6,26 @@ module TaskReport
   module Gist
     class << self
       def find_gist_from_today_by_description(description)
-        Gist.get_recent_gists_for_user.find do |gist|
+        get_gists_for_user.find do |gist|
           gist['description'] == description
         end
       end
 
-      def get_recent_gists_for_user
-        now = Time.now
+      def find_gists_by_descriptions(descriptions, from = Time.now)
+        get_gists_for_user(from).select do |gist|
+          descriptions.include? gist['description']
+        end
+      end
 
+      def find_gists_by_description(description, from = Time.now)
+        get_gists_for_user(from).find do |gist|
+          description == gist['description']
+        end
+      end
+
+      def get_gists_for_user(from = Time.now)
         # kind of like Time.now.midnight in UTC
-        time_string = Time.new(now.year, now.month, now.day).getgm.strftime('%Y-%m-%dT%H:%M:%SZ')
+        time_string = Time.new(from.year, from.month, from.day).getgm.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         params = {
           access_token: User.api_token,
@@ -75,6 +85,18 @@ module TaskReport
         request['Authorization'] = "token #{User.api_token}"
         response = http.request(request)
         JSON.parse(response.body)
+      end
+
+      def create_or_update(params, from)
+        description = params[:description]
+        found = find_gists_by_description(from)
+
+        if found
+          edit(found['id'], params)
+          return found
+        end
+
+        create(params)
       end
     end
   end
