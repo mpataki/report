@@ -12,8 +12,8 @@ module TaskReport
         "#{User.name}_report_#{time.strftime('%Y-%m-%d')}"
       end
 
-      def json_file_name
-        "#{gist_description}.json"
+      def json_file_name(description = nil)
+        "#{description || gist_description}.json"
       end
 
       def create(new_task_description:)
@@ -24,10 +24,11 @@ module TaskReport
       end
 
       def create_from_gist(gist)
-        raw_url = gist['files'][json_file_name]['raw_url']
+        description = gist['description'] || gist_description
+        raw_url = gist['files'][json_file_name(description)]['raw_url']
 
         Report.new(
-          description: gist_description,
+          description: description,
           json_file_name: json_file_name,
           gist_id: gist['id'],
           gist_html_url: gist['html_url'],
@@ -101,7 +102,7 @@ module TaskReport
       end
     end
 
-    def print_summary(from, to)
+    def print_summary
       if @tasks.empty?
         puts 'There are no tasks reported for today.'
         return
@@ -117,8 +118,10 @@ module TaskReport
           puts "  - #{note}"
         end
 
-        puts "\nTotal time tracked: #{total_duration.to_s}"
+        puts "\n"
       end
+
+      puts "Total time tracked: #{total_duration.to_s}\n\n"
     end
 
     def gist_summary(from, to)

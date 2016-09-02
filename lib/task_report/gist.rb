@@ -6,7 +6,7 @@ module TaskReport
   module Gist
     class << self
       def find_gist_from_today_by_description(description)
-        get_recent_gists_for_user.find do |gist|
+        get_gists_for_user.find do |gist|
           gist['description'] == description
         end
       end
