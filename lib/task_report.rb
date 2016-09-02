@@ -195,7 +195,7 @@ module TaskReport
       end
 
       def range_summary(gist, from, to)
-        reports = find_reports(from, to)
+        reports = find_reports(from, to).reverse
 
         if gist
           print_range_summary_to_gist(reports, from, to)
