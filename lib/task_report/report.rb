@@ -124,7 +124,7 @@ module TaskReport
       puts "Total time tracked: #{total_duration.to_s}\n\n"
     end
 
-    def gist_summary(from, to)
+    def gist_summary
       if @tasks.empty?
         puts 'There are no tasks reported for today.'
         return
@@ -162,6 +162,24 @@ module TaskReport
 
     def total
       puts total_duration.to_s
+    end
+
+    def gist_summary_content
+      lines = ["## #{User.name} Task Report #{@date.strftime('%Y-%m-%d')}", '']
+
+      @tasks.each do |task|
+        lines << "- '#{task.description}'"
+        lines << "  - #{task.duration.to_s}"
+
+        task.notes.each do |note|
+          lines << "  - #{note}"
+        end
+      end
+
+      lines << ''
+      lines << "#### Total time tracked: #{total_duration.to_s}"
+
+      lines.join("\n")
     end
 
     private
@@ -240,24 +258,6 @@ module TaskReport
 
       def ensure_only_one_ongoing_task!
         raise MultipleOngoingTasks if @tasks.count(&:ongoing?) > 1
-      end
-
-      def gist_summary_content
-        lines = ["## #{User.name} Task Report #{@date.strftime('%Y-%m-%d')}", '']
-
-        @tasks.each do |task|
-          lines << "- '#{task.description}'"
-          lines << "  - #{task.duration.to_s}"
-
-          task.notes.each do |note|
-            lines << "  - #{note}"
-          end
-        end
-
-        lines << ''
-        lines << "#### Total time tracked: #{total_duration.to_s}"
-
-        lines.join("\n")
       end
 
       def total_duration

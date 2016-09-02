@@ -11,9 +11,15 @@ module TaskReport
         end
       end
 
-      def find_gists_by_descriptions(descriptions, from)
+      def find_gists_by_descriptions(descriptions, from = Time.now)
         get_gists_for_user(from).select do |gist|
           descriptions.include? gist['description']
+        end
+      end
+
+      def find_gists_by_description(description, from = Time.now)
+        get_gists_for_user(from).find do |gist|
+          description == gist['description']
         end
       end
 
@@ -79,6 +85,18 @@ module TaskReport
         request['Authorization'] = "token #{User.api_token}"
         response = http.request(request)
         JSON.parse(response.body)
+      end
+
+      def create_or_update(params, from)
+        description = params[:description]
+        found = find_gists_by_description(from)
+
+        if found
+          edit(found['id'], params)
+          return found
+        end
+
+        create(params)
       end
     end
   end

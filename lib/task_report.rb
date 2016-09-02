@@ -99,8 +99,10 @@ module TaskReport
     end
 
     def summary(gist, from, to)
-      return range_summary_gist(gist, from, to) if from && gist
-      return range_summary(from, to) if from
+      if from
+        return range_summary(gist, from, to || Time.now.strftime('%Y-%m-%d'))
+      end
+
       return if no_gist?
 
       @report ||= Report.create_from_gist(report_gist)
@@ -112,30 +114,25 @@ module TaskReport
       end
     end
 
-    def range_summary(from, to)
-      from_time = Time.parse(from)
-      from_epoch = from_time.to_i
+    def print_range_summary_to_gist(reports, from, to)
+      content = reports.map { |r| r.gist_summary_content }.compact.join("\n\n")
+      file_name = "task_report_#{from}_-_#{to}.md"
 
-      to_epoch =
-        if to
-          Time.parse(to).to_i
-        else
-          now = Time.now
-          Time.new(now.year, now.month, now.day).to_i
-        end
+      gist =
+        Gist.create_or_update(
+          {
+            public: false,
+            description: "Task Report: #{from} - #{to}",
+            files: {
+              file_name => {
+                content: content
+              }
+            }
+          },
+          Time.parse(from)
+        )
 
-      seconds_in_a_day = 86400
-      descriptions = []
-
-      (from_epoch..to_epoch).step(seconds_in_a_day) do |epoch|
-        descriptions << Report.gist_description(Time.at(epoch))
-      end
-
-      gists = Gist.find_gists_by_descriptions(descriptions, from_time)
-      gists.each { |gist| Report.create_from_gist(gist).print_summary }
-    end
-
-    def range_summary_gist(gist, from, to)
+      puts gist['html_url']
     end
 
     def note(task_id, note)
@@ -172,6 +169,39 @@ module TaskReport
         end
 
         false
+      end
+
+      def find_reports(from, to)
+        from_time = Time.parse(from)
+        from_epoch = from_time.to_i
+
+        to_epoch =
+          if to
+            Time.parse(to).to_i
+          else
+            now = Time.now
+            Time.new(now.year, now.month, now.day).to_i
+          end
+
+        seconds_in_a_day = 86400
+        descriptions = []
+
+        (from_epoch..to_epoch).step(seconds_in_a_day) do |epoch|
+          descriptions << Report.gist_description(Time.at(epoch))
+        end
+
+        gists = Gist.find_gists_by_descriptions(descriptions, from_time)
+        gists.map { |gist| Report.create_from_gist(gist) }
+      end
+
+      def range_summary(gist, from, to)
+        reports = find_reports(from, to)
+
+        if gist
+          print_range_summary_to_gist(reports, from, to)
+        else
+          reports.map(&:print_summary)
+        end
       end
   end
 end
