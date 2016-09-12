@@ -62,7 +62,7 @@ module TaskReport
 
     def continue
       raise TaskOngoing if @time.last[:end].nil?
-      puts "Continueing #{self.to_s}"
+      puts "Continuing #{self.to_s}"
       @time << { start: Time.now, end: nil }
     end
 
